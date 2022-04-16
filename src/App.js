@@ -1,13 +1,15 @@
 
 import './App.css';
+import data from "./data.json";
 
 function App() {
   return (
-    <div className="App">
-      <ul>
-        <li>Luke Skywalker</li>
+    <ul>
+    {data.results.map((character) => (
+      <li key={character.name}>{character.name}</li>
+    ))}
       </ul>
-    </div>
+    
   );
 }
 
