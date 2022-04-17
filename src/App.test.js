@@ -20,4 +20,12 @@ describe("Star Wars App", () => {
     });
 
   });
+
+  it('Should show an error when occurs a network error', async () => {
+    window.fetch.mockResolvedValueOnce(new Error("Network error"));
+    render(<App/>);
+    expect( await screen.findByText("Network Error")).toBeInTheDocument();
+
+  });
+
 });
