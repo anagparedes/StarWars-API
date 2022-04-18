@@ -13,6 +13,18 @@ export async function getPeople () {
 
 }
 
+export async function getCharacter (id = 1) {
+  const response = await fetch(`https://swapi.dev/api/people/${id}/`);
+  const data = response.json();
+  return data;
+}
+
+export async function searchCharacter (name) {
+  const response = await fetch(`https://swapi.dev/api/people/?search=${name}/`);
+  const data = response.json();
+  return data;
+}
+
 class NetworkError extends Error{
   constructor(){
     super("Network Error");
