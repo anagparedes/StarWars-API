@@ -7,14 +7,15 @@ function App() {
   const [people, setPeople] = useState([]);
   const [textSearch, setTextSearch] = useState("");
   const [currentCharacter, setCurrentCharacter] = useState(1);
+  const [page, setPage] = useState(1);
   const [details, setDetails] = useState({});
   const [errorState, setErrorState] = useState({ hasError: false });
 
   useEffect(() => {
-    getPeople()
-      .then((data) => setPeople(data.results))
+    getPeople(page)
+      .then(setPeople)
       .catch(handleError);
-  }, []);
+  }, [page]);
 
   useEffect(() => {
   getCharacter(currentCharacter).then((setDetails)).catch(handleError);
@@ -39,9 +40,15 @@ function App() {
     inputSearch.current.value = "";
     setDetails({});
     searchCharacter(textSearch)
-    .then(data => setPeople(data.results))
+    .then(setPeople)
     .catch(handleError);
   };
+
+  const onChangePage = next => {
+   if(!people.previous && page + next <= 0) return;
+   if(!people.next && page + next >= 9) return;
+   setPage(page + next);
+  }
 
   return (
     <div>
@@ -52,10 +59,15 @@ function App() {
         type="text"
         placeholder="Write the name of the character"
       />
+  <section>
+    <button onClick={ () => onChangePage(-1)}>Prev</button>| {page} |
+    <button onClick={() => onChangePage(1)}>Next</button>
+  </section>
+
       <ul>
         {errorState.hasError && <div>{errorState.message}</div>}
 
-        {people.map((character) => (
+        {people?.results?.map((character) => (
           <li key={character.name} onClick={() => showDetails(character)}>
             {character.name}
           </li>
